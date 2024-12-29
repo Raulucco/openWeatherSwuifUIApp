@@ -4,10 +4,38 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>dev-swiftui-weather-app.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>prod-swiftui-weather-app.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>swiftui-weather-app.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>2</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>FC7A13F12D0F5F64005C88CB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FC7A14012D0F5F67005C88CB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FC7A140B2D0F5F67005C88CB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
