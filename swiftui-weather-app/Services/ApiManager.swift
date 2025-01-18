@@ -7,33 +7,43 @@
 
 import Foundation
 
+protocol SettingsManager<V>: ObservableObject {
+    associatedtype V
+    var value: V { get set }
+}
 
-struct ApiManager: Hashable {
-    private let API_KEY_NAME = "API_KEY"
+class ApiManager: SettingsManager {
+    typealias V = String
+    private let userDefaults: UserDefaults
+    private let environment: [String: String]  // ProcessInfo.processInfo.environment
+    private let apiKeyName: String
 
-    var apiKey: String
-    
-    init(apiKey: String) {
-        self.apiKey = apiKey
-    }
-
-    func storeUserApiKey(apiKey: String) {
-        UserDefaults.standard.set(API_KEY_NAME, forKey: apiKey)
-    }
-
-    func useUserStoredApiKey() -> String? {
-        if let apiKeyValue = UserDefaults.standard.string(forKey: API_KEY_NAME) {
-            return apiKeyValue
+    @Published
+    var apiKey: V? {
+        didSet {
+            if let apiKey = apiKey {
+                userDefaults.set(apiKey, forKey: apiKeyName)
+            }
         }
-        
-        return nil
     }
 
-    func getStoredApiKey() -> String? {
-        if let apiKeyValue = ProcessInfo.processInfo.environment[API_KEY_NAME] {
-            return apiKeyValue
-        } else {
-            return useUserStoredApiKey()
+    var value: V {
+        get {
+            apiKey ?? userDefaults.string(forKey: apiKeyName) ?? environment[
+                apiKeyName] ?? ""
         }
+        set {
+            apiKey = newValue
+        }
+    }
+
+    init(
+        apiKeyName: String, userDefaults: UserDefaults = .standard,
+        environment env: [String: String] = [String: String]()
+    ) {
+        self.apiKeyName = apiKeyName
+        self.userDefaults = userDefaults
+        self.apiKey = userDefaults.string(forKey: apiKeyName)
+        self.environment = env
     }
 }
