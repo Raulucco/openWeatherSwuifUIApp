@@ -11,7 +11,10 @@ import SwiftUI
 struct swiftui_weather_appApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ZStack {
+                BackgroundView()
+                ContentView()
+            }
         }
     }
 }

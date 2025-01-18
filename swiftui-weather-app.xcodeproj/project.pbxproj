@@ -88,7 +88,6 @@
 		FC7A13E92D0F5F64005C88CB = {
 			isa = PBXGroup;
 			children = (
-				FCD18D502D14BF38001B23F9 /* ci_scripts */,
 				FC7A13F42D0F5F64005C88CB /* swiftui-weather-app */,
 				FC7A14052D0F5F67005C88CB /* swiftui-weather-appTests */,
 				FC7A140F2D0F5F67005C88CB /* swiftui-weather-appUITests */,
@@ -104,13 +103,6 @@
 				FC7A140C2D0F5F67005C88CB /* swiftui-weather-appUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FCD18D502D14BF38001B23F9 /* ci_scripts */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ci_scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

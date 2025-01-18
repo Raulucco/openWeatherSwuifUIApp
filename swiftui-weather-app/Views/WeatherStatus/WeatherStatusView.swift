@@ -12,7 +12,7 @@ struct WeatherStatusView: View {
     var imageName: String
     var dayName: String
     var dayNameSize = 16
-    var temperatureSize = 24
+    var temperatureSize = 20
     let width: CGFloat
     
     var body: some View {

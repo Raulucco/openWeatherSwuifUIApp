@@ -6,22 +6,23 @@
 //
 
 import SwiftUI
-import CoreLocationUI
+import CoreLocation
 
 struct LoadWeatherAtView: View {
-    @StateObject private var userLocation = UserLocation()
+    var path: any RouterCoordinator<Routes>
+    let location: CLLocationCoordinate2D
+    var apiKey: String
+
     private let currentWeatherData = WeatherDataResponse<CurrentWeatherData>()
     private let forecastData = WeatherDataResponse<WeatherData>()
     private let measurementSystem = Locale.current.measurementSystem
     @State private var currentWeatherDataResponse: CurrentWeatherData?
     @State private var forecastDataResponse: WeatherData?
 
-    var apiKey: String
     var body: some View {
        
         ZStack {
             BackgroundView()
-            if let location = userLocation.location {
                 VStack {
                     if let currentWeatherDataResponse = currentWeatherDataResponse {
                         CurrentWeatherAtView(weatherDataResponse: currentWeatherDataResponse, location: location, apiKey: apiKey)
@@ -50,17 +51,7 @@ struct LoadWeatherAtView: View {
                     
                     forecastDataResponse = await forecastData.loadForecast(url: forecastUrl, location: location, with: apiKey, measurementSystem: measurementSystem)
                 }
-
-            } else {
-                LocationButton {
-                    userLocation.requestLocation()
-                }
-            }
         }
 
     }
 }
-//
-//#Preview {
-//    LoadWeatherAtView(apiKey: "")
-//}

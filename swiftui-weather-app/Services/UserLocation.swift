@@ -8,9 +8,12 @@
 import Foundation
 import CoreLocation
 
-class UserLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
+
+class UserLocation: NSObject, CLLocationManagerDelegate, ObservableObject {
     private let manager = CLLocationManager()
-    @Published var location: CLLocationCoordinate2D?
+    
+    @Published
+    var location: CLLocationCoordinate2D?
     
     override init() {
         super.init()
@@ -26,7 +29,6 @@ class UserLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
             return
         }
         location = currentLocation
-
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
