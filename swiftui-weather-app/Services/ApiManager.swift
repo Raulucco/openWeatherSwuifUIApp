@@ -15,34 +15,35 @@ protocol SettingsManager<V>: ObservableObject {
 class ApiManager: SettingsManager {
     typealias V = String
     private let userDefaults: UserDefaults
-    private let environment: [String : String] // ProcessInfo.processInfo.environment
+    private let environment: [String: String]  // ProcessInfo.processInfo.environment
     private let apiKeyName: String
-    
+
     @Published
-    private var apiKey: V? {
+    var apiKey: V? {
         didSet {
             if let apiKey = apiKey {
                 userDefaults.set(apiKey, forKey: apiKeyName)
             }
         }
     }
-    
+
     var value: V {
         get {
-            apiKey ?? userDefaults.string(forKey: apiKeyName) ?? environment[apiKeyName] ?? ""
+            apiKey ?? userDefaults.string(forKey: apiKeyName) ?? environment[
+                apiKeyName] ?? ""
         }
         set {
             apiKey = newValue
         }
     }
-    
-    
-    init(apiKeyName: String, userDefaults: UserDefaults = .standard, environment env: [String : String] = [String : String]()) {
+
+    init(
+        apiKeyName: String, userDefaults: UserDefaults = .standard,
+        environment env: [String: String] = [String: String]()
+    ) {
         self.apiKeyName = apiKeyName
         self.userDefaults = userDefaults
         self.apiKey = userDefaults.string(forKey: apiKeyName)
         self.environment = env
     }
-    
-    static var shared = ApiManager(apiKeyName: "API_KEY")
 }

@@ -8,26 +8,37 @@
 import SwiftUI
 
 struct WeatherStatusView: View {
-    var temperature: String
-    var imageName: String
-    var dayName: String
-    var dayNameSize = 16
-    var temperatureSize = 20
-    let width: CGFloat
-    
+    var status: Status
+    @State var descriptionIsPresented: Bool = false
+
     var body: some View {
         VStack(alignment: .center) {
-            
-            AsyncImage(url: URL(string: "https://openweathermap.org/img/wn/\(imageName)@2x.png")) {
+
+            AsyncImage(
+                url: URL(
+                    string:
+                        "https://openweathermap.org/img/wn/\(status.imageName)@2x.png"
+                )
+            ) {
                 image in
                 image.resizable().aspectRatio(contentMode: .fit)
             } placeholder: {
                 ProgressView()
-            }.frame(width: width)
-            
-            Text(dayName).font(.system(size: CGFloat(dayNameSize), weight: .medium)).foregroundColor(.white)
-                
-            Text("\(temperature)˚").font(.system(size: CGFloat(temperatureSize), weight: .medium)).foregroundColor(.white)
+            }.frame(width: status.width).onTapGesture {
+                descriptionIsPresented = true
+            }.alert(status.description, isPresented: $descriptionIsPresented) {
+                Button("Dismiss") {
+                    descriptionIsPresented = false
+                }
+            }
+
+            Text(status.dayName).font(
+                .system(size: CGFloat(status.dayNameSize), weight: .medium)
+            ).foregroundColor(.white)
+
+            Text("\(status.temperature)˚").font(
+                .system(size: CGFloat(status.temperatureSize), weight: .medium)
+            ).foregroundColor(.white)
         }
     }
 }

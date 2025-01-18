@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsView<ApiManager: SettingsManager>: View
 where ApiManager.V == String {
-    var path: any RouterCoordinator<Routes>
+    var path: any RouterCoordinator<MainRoutes>
     var apiKeyManager: ApiManager
 
     @Environment(\.openURL) private var openURL

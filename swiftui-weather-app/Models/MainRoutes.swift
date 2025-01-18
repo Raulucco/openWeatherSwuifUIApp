@@ -5,15 +5,14 @@
 //  Created by Raul CM on 29.12.2024.
 //
 
-import Foundation
 import CoreLocation
+import Foundation
 
-
-enum Routes: Hashable {
+enum MainRoutes: Hashable {
     case settings(apiKeyManager: ApiManager)
     case locationPicker
     case weatherStatus(location: CLLocationCoordinate2D)
-    
+
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.settings(let lhsApiManager), .settings(let rhsApiManager)):
@@ -21,12 +20,13 @@ enum Routes: Hashable {
         case (.locationPicker, .locationPicker):
             return true
         case (.weatherStatus(let lhsLocation), .weatherStatus(let rhsLocation)):
-            return lhsLocation.latitude == rhsLocation.latitude && lhsLocation.longitude == rhsLocation.longitude
+            return lhsLocation.latitude == rhsLocation.latitude
+                && lhsLocation.longitude == rhsLocation.longitude
         default:
             return false
         }
     }
-    
+
     public func hash(into hasher: inout Hasher) {
         switch self {
         case .settings(let apiKeyManager):
@@ -38,5 +38,3 @@ enum Routes: Hashable {
         }
     }
 }
-
-

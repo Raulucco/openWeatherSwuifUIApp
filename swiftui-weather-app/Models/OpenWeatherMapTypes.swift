@@ -36,7 +36,7 @@ struct WeatherData: Decodable {
     let city: City?
     let message: Double
     let list: [DailyForecast]
-    
+
     struct DailyForecast: Decodable {
 
         let main: Main
@@ -52,7 +52,7 @@ struct CurrentWeatherData: Decodable {
     let base: String
     let main: Main
     let visibility: Int
-    let rain: Rain? // Optional, as rain might not always be present
+    let rain: Rain?  // Optional, as rain might not always be present
     let clouds: Clouds
     let dt: Int
     let sys: Sys
@@ -62,7 +62,7 @@ struct CurrentWeatherData: Decodable {
 
     // MARK: - Rain
     struct Rain: Decodable {
-        let the1H: Double // Renamed to avoid keyword conflict
+        let the1H: Double  // Renamed to avoid keyword conflict
     }
 
     // MARK: - Clouds

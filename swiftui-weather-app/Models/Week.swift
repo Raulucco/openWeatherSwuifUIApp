@@ -29,10 +29,12 @@ func getNextDays(totalDays: Int) -> [Day] {
     let calendar = Calendar.current
 
     for dayOffset in 0..<totalDays {
-        if let date = calendar.date(byAdding: .day, value: dayOffset + 1, to: anchor) {
+        if let date = calendar.date(
+            byAdding: .day, value: dayOffset + 1, to: anchor)
+        {
             days.append(Day(date: date))
         }
     }
-    
+
     return days
 }

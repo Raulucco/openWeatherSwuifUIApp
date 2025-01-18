@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-protocol RouterCoordinator<R>: ObservableObject {
+protocol RouterCoordinator<R>: ObservableObject where R == MainRoutes {
     associatedtype R
     var navigationPath: NavigationPath { get set }
     func navigate(to route: R)
@@ -16,84 +16,88 @@ protocol RouterCoordinator<R>: ObservableObject {
     func navigateToRoot()
 }
 
+extension RouterCoordinator {
+    @ViewBuilder
+    func loadView(route: R) -> some View {
+        EmptyView()
+    }
+}
+
 class MainRouterCoordinator: RouterCoordinator {
-    typealias R = Routes
+    typealias R = MainRoutes
+
     @Published
     var navigationPath = NavigationPath()
-    
-    static let shared = MainRouterCoordinator()
-    
-    private init() {}
-    
+
     func navigate(to route: R) {
         navigationPath.append(route)
     }
-    
+
     func navigateBack() {
         navigationPath.removeLast()
     }
-    
+
     func navigateToRoot() {
         navigationPath.removeLast(navigationPath.count)
     }
-    
+
     @ViewBuilder
     func loadView(route: R) -> some View {
         switch route {
         case .settings(let apiKeyManager):
-             SettingsView(path: self, apiKeyManager: apiKeyManager)
+            SettingsView(path: self, apiKeyManager: apiKeyManager)
         case .weatherStatus(let location):
-             LoadWeatherAtView(path: self, location: location, apiKey: "")
+            LoadWeatherAtView(path: self, location: location)
         case .locationPicker:
-             LocationView()
+            LocationView()
         }
     }
 }
 
+class LocationRouterCoordinator: ObservableObject, RouterCoordinator {
+    var navigationPath: NavigationPath
 
-class LocationRouterCoordinator: ObservableObject {
     @Published
     var parentCoordinator: MainRouterCoordinator
-    
+
     private var childRoutesDeep = 0
-    
-    init(parent: MainRouterCoordinator = MainRouterCoordinator.shared) {
+
+    init(parent: MainRouterCoordinator) {
         self.parentCoordinator = parent
+        navigationPath = parent.navigationPath
     }
-            
+
     func navigate(to route: LocationRoutes) {
         switch route {
         case .parent(let parentRoute):
-            parentCoordinator.navigationPath.removeLast(childRoutesDeep)
-            childRoutesDeep = 0
-            parentCoordinator.navigate(to: parentRoute)
+            navigate(to: parentRoute)
         default:
             childRoutesDeep += 1
             parentCoordinator.navigationPath.append(route)
         }
     }
-    
+
+    func navigate(to route: MainRoutes) {
+        parentCoordinator.navigationPath.removeLast(childRoutesDeep)
+        childRoutesDeep = 0
+        parentCoordinator.navigate(to: route)
+    }
+
     func navigateBack() {
         parentCoordinator.navigateBack()
     }
-    
+
     func navigateToRoot() {
         parentCoordinator.navigateToRoot()
     }
-    
+
     @ViewBuilder
     func loadView(route: LocationRoutes) -> some View {
         switch route {
-//        case .home:
-//            LocationPickerView(routerCoordinator: self)
         case .map:
             LocationSelectorView(routerCoordinator: self)
-        case .parent(route: let route):
+        case .parent(let route):
             parentCoordinator.loadView(route: route)
         }
     }
 }
-
-
-
-

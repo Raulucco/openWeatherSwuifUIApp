@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LocationView: View {
-    private var coordinator: LocationRouterCoordinator = LocationRouterCoordinator(parent: MainRouterCoordinator.shared)
+    private var coordinator: LocationRouterCoordinator = LocationRouterCoordinator(parent: MainRouterCoordinator())
     
     var body: some View {
         LocationPickerView(routerCoordinator: coordinator)
